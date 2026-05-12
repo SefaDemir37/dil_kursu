@@ -2,11 +2,11 @@
 
 Kastamonu Üniversitesi Tosya MYO — Programlama II Dönem Sonu Projesi
 
-## 📌 Proje Hakkında
+##  Proje Hakkında
 
 Python ve Flask kullanılarak geliştirilmiş, MySQL veritabanı destekli web tabanlı bir **Dil Kursu Yönetim Sistemi**dir. Öğrenci ve kurs kayıtları CRUD işlemleriyle yönetilmekte; kurslar haftalık saat ve saatlik ücret bazında tanımlanmakta; öğrenciler kurslara süre (1/3/6/12 ay) seçerek otomatik fiyat hesaplamasıyla kaydedilmektedir. Ders programı ayrı bir sayfada görüntülenir.
 
-## ✨ Özellikler
+##  Özellikler
 
 - **Öğrenci Yönetimi** → Ekle, güncelle, sil
 - **Kurs Yönetimi** → Haftalık saat, saatlik ücret, otomatik aylık fiyat hesaplama
@@ -14,7 +14,7 @@ Python ve Flask kullanılarak geliştirilmiş, MySQL veritabanı destekli web ta
 - **Ders Programı** → Günlere göre haftalık ders programı görüntüleme
 - **AJAX** → Kayıt formunda anlık fiyat hesaplama
 
-## 🚀 Kurulum
+##  Kurulum
 
 ### 1. Gereksinimler
 ```bash
@@ -33,7 +33,7 @@ python main.py
 ```
 Tarayıcıda `http://127.0.0.1:5000` adresini açın.
 
-## 🗂️ Modül Yapısı
+##  Modül Yapısı
 
 ```
 dil_kursu/
@@ -53,8 +53,7 @@ dil_kursu/
 ├── templates/               # Jinja2 HTML şablonları
 └── static/css/style.css     # Özel CSS
 ```
-
-## 🏗️ OOP Yapısı
+##  OOP Yapısı
 
 | Sınıf | Açıklama |
 |-------|----------|
@@ -67,7 +66,7 @@ dil_kursu/
 | `KayitDAO` | Kayıt CRUD + JOIN sorguları |
 | `DersProgramiDAO` | Ders programı CRUD işlemleri |
 
-## 🛠️ Teknolojiler
+##  Teknolojiler
 
 - **Python 3.x** — Ana programlama dili
 - **Flask** — Web framework (Blueprint ile modüler yapı)
@@ -76,7 +75,7 @@ dil_kursu/
 - **Jinja2** — HTML şablon motoru
 - **AJAX / JavaScript** — Anlık fiyat hesaplama
 
-## 📊 Veritabanı Şeması
+## Veritabanı Şeması
 
 - **ogrenciler** → Öğrenci bilgileri
 - **kurslar** → Kurs adı, dil, seviye, saatlik ücret, haftalık saat
