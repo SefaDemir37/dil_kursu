@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block icerik %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2><i class="bi bi-calendar3 me-2 text-primary"></i>Ders Programı</h2>
+</div>
+
+<div class="row g-3">
+  {% for gun in gunler %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-primary text-white py-2">
+        <strong><i class="bi bi-calendar-day me-1"></i>{{ gun }}</strong>
+      </div>
+      <div class="card-body p-0">
+        {% if programa_gore[gun] %}
+        <table class="table table-sm table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Saat</th>
+              <th>Öğrenci</th>
+              <th>Kurs</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ders in programa_gore[gun] %}
+            <tr>
+              <td class="fw-bold text-primary">
+                {{ ders.ders_saati|string|truncate(5, True, "") }}
+              </td>
+              <td>{{ ders.ad }} {{ ders.soyad }}</td>
+              <td>
+                {{ ders.kurs_adi }}<br>
+                <small class="text-muted">{{ ders.dil }} <span class="badge bg-secondary">{{ ders.seviye }}</span></small>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="text-center text-muted py-4 small">Ders yok</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
+

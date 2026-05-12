@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block icerik %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2><i class="bi bi-book me-2 text-success"></i>Kurslar</h2>
+  <a href="/kurslar/ekle" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i>Yeni Kurs</a>
+</div>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-success">
+        <tr>
+          <th>#</th>
+          <th>Kurs Adı</th>
+          <th>Dil</th>
+          <th>Seviye</th>
+          <th>Haftalık Saat</th>
+          <th>Saatlik Ücret</th>
+          <th>Aylık Ücret</th>
+          <th class="text-end">İşlemler</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for k in kurslar %}
+        {% set aylik = k.saatlik_ucret * k.haftalik_saat * 4 %}
+        <tr>
+          <td>{{ k.kurs_id }}</td>
+          <td>{{ k.kurs_adi }}</td>
+          <td>{{ k.dil }}</td>
+          <td><span class="badge bg-secondary">{{ k.seviye }}</span></td>
+          <td>{{ k.haftalik_saat }} saat</td>
+          <td>{{ "%.2f"|format(k.saatlik_ucret) }} ₺</td>
+          <td class="fw-bold text-success">{{ "%.2f"|format(aylik) }} ₺</td>
+          <td class="text-end">
+            <a href="/kurslar/guncelle/{{ k.kurs_id }}" class="btn btn-sm btn-outline-success me-1">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <form action="/kurslar/sil/{{ k.kurs_id }}" method="POST" class="d-inline"
+                  onsubmit="return confirm('Bu kursu silmek istediğinize emin misiniz?')">
+              <button type="submit" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" class="text-center text-muted py-4">Henüz kurs eklenmedi.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

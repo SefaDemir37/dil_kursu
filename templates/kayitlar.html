@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block icerik %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2><i class="bi bi-card-checklist me-2 text-warning"></i>Kayıtlar</h2>
+  <a href="/kayitlar/ekle" class="btn btn-warning text-dark">
+    <i class="bi bi-plus-circle me-1"></i>Yeni Kayıt
+  </a>
+</div>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-warning">
+        <tr>
+          <th>#</th>
+          <th>Öğrenci</th>
+          <th>Kurs</th>
+          <th>Süre</th>
+          <th>Başlangıç</th>
+          <th>Bitiş</th>
+          <th>Toplam Ücret</th>
+          <th class="text-end">Sil</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for k in kayitlar %}
+        <tr>
+          <td>{{ k.kayit_id }}</td>
+          <td>{{ k.ad }} {{ k.soyad }}</td>
+          <td>
+            {{ k.kurs_adi }}<br>
+            <small class="text-muted">{{ k.dil }} <span class="badge bg-secondary">{{ k.seviye }}</span></small>
+          </td>
+          <td>{{ k.sure_ay }} ay</td>
+          <td>{{ k.baslangic_tarihi }}</td>
+          <td>{{ k.bitis_tarihi }}</td>
+          <td class="fw-bold text-success">{{ "%.2f"|format(k.toplam_fiyat) }} ₺</td>
+          <td class="text-end">
+            <form action="/kayitlar/sil/{{ k.kayit_id }}" method="POST" class="d-inline"
+                  onsubmit="return confirm('Bu kaydı silmek istediğinize emin misiniz?')">
+              <button type="submit" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" class="text-center text-muted py-4">Henüz kayıt oluşturulmadı.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

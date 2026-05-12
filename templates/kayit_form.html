@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block icerik %}
+
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0"><i class="bi bi-card-checklist me-2"></i>Öğrenciyi Kursa Kaydet</h5>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST">
+
+          <!-- Öğrenci -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Öğrenci</label>
+            <select name="ogrenci_id" class="form-select" required>
+              <option value="" disabled selected>Öğrenci seçin...</option>
+              {% for o in ogrenciler %}
+                <option value="{{ o.ogrenci_id }}">{{ o.ad }} {{ o.soyad }} — {{ o.email }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Kurs -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Kurs</label>
+            <select name="kurs_id" id="kurs_id" class="form-select" required onchange="fiyatHesapla()">
+              <option value="" disabled selected>Kurs seçin...</option>
+              {% for k in kurslar %}
+                <option value="{{ k.kurs_id }}">
+                  {{ k.kurs_adi }} — {{ k.dil }} {{ k.seviye }}
+                  (Haftada {{ k.haftalik_saat }} saat · {{ "%.0f"|format(k.saatlik_ucret) }}₺/saat)
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Süre -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Kurs Süresi</label>
+            <select name="sure_ay" id="sure_ay" class="form-select" required onchange="fiyatHesapla()">
+              <option value="" disabled selected>Süre seçin...</option>
+              <option value="1">1 Ay</option>
+              <option value="3">3 Ay</option>
+              <option value="6">6 Ay</option>
+              <option value="12">12 Ay</option>
+            </select>
+          </div>
+
+          <!-- Fiyat Özeti (AJAX) -->
+          <div id="fiyat_ozet" class="alert alert-success d-none mb-3">
+            <div class="row text-center">
+              <div class="col-4">
+                <div class="small text-muted">Haftalık Saat</div>
+                <div class="fw-bold" id="ozet_haftalik">—</div>
+              </div>
+              <div class="col-4">
+                <div class="small text-muted">Aylık Ücret</div>
+                <div class="fw-bold" id="ozet_aylik">—</div>
+              </div>
+              <div class="col-4">
+                <div class="small text-muted">Toplam Ücret</div>
+                <div class="fw-bold fs-5 text-success" id="ozet_toplam">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Başlangıç Tarihi -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Başlangıç Tarihi</label>
+            <input type="date" name="baslangic_tarihi" class="form-control" required>
+          </div>
+
+          <!-- Ders Günleri -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Ders Günleri</label>
+            <div class="d-flex flex-wrap gap-2">
+              {% for gun in gunler %}
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="gunler" value="{{ gun }}" id="gun_{{ loop.index }}">
+                <label class="form-check-label" for="gun_{{ loop.index }}">{{ gun }}</label>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Ders Saati -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Ders Saati</label>
+            <input type="time" name="ders_saati" class="form-control" required>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-warning text-dark">
+              <i class="bi bi-check2 me-1"></i>Kaydet
+            </button>
+            <a href="/kayitlar" class="btn btn-secondary">
+              <i class="bi bi-x me-1"></i>İptal
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function fiyatHesapla() {
+  const kursId = document.getElementById("kurs_id").value;
+  const sureAy = document.getElementById("sure_ay").value;
+  if (!kursId || !sureAy) return;
+
+  fetch(`/kayitlar/fiyat_hesapla?kurs_id=${kursId}&sure_ay=${sureAy}`)
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById("ozet_haftalik").textContent = d.haftalik_saat + " saat";
+      document.getElementById("ozet_aylik").textContent    = d.aylik.toLocaleString("tr-TR", {minimumFractionDigits:2}) + " ₺";
+      document.getElementById("ozet_toplam").textContent   = d.fiyat.toLocaleString("tr-TR", {minimumFractionDigits:2}) + " ₺";
+      document.getElementById("fiyat_ozet").classList.remove("d-none");
+    });
+}
+</script>
+
+{% endblock %}
