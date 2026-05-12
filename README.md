@@ -1,4 +1,4 @@
-# 🌐 Dil Kursu Yönetim Sistemi v
+# 🌐 Dil Kursu Yönetim Sistemi 
 
 Kastamonu Üniversitesi Tosya MYO — Programlama II Dönem Sonu Projesi
 
